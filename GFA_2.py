@@ -21,6 +21,8 @@ def main():
         # controllo che il path sia valido
         os.path.isfile(GFACompleteFilePath)
         readGFAFileLines(GFACompleteFilePath)
+        print(json.dumps(dictionaryError, indent=4, sorted_keys=False))
+        print('Programma terminato correttamente')
     except Exception as e: #catcho le eccezzioni e le stampo per capire cos'è andato storto
         print('Qualcosa è andato storto: {}'.format(e))
         os._exit(1)
@@ -67,8 +69,7 @@ def readGFAFileLines(GFAFilePath):
                 LineErrorFlag = False
             lineToCheck = GFAFileToCheck.readline()
             linePointer += 1
-        print(json.dumps(dictionaryError, indent=4, sorted_keys=False))
-        print('Programma terminato correttamente')
+
 
 def GFAFileError(errorDictionary, NRiga, TestoRiga, MessaggioErrore):
     # si potrebbe pure creare una funzione che si occupa di accorpare le righe adiacenti di errore
