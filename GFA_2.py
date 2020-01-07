@@ -1,30 +1,44 @@
-# validator per file GFA 2.0
-# questo programma dato un file in formato .gfa (o .txt) deve controllare se il file rispetta gli standard GFA 2.0
-# il formato GFA 2.0 è una generalizzazione del formato GFA 1.0, quindi questo validatore deve essere in grado di controllare
-# senza problemi entrambi i formati.
-
-# il validatore NON deve controllare se le istruzioni sono logicamente correte,
-# deve SOLO controllare che siano sintatticamente corrette 
-
 import os 
 import re 
 import json
+import webbrowser # totalmente just for fun
 
 
-dictionaryError = {}
-errorMex = ''
+errorsArray = []
+disclaimerString = ('\n' + 'Questo programma si occupa di controllare se un determinato file rispetti o meno' +
+                    ' la sintassi di un determinato linguaggio.' + '\n' +
+                    'Il linguaggio (o formato) in questione è il Graphical Fragment Assembly (GFA) 2.0.' + '\n' +
+                    'Il formato GFA 2.0 è una generalizzazione del formato GFA 1.0, permette infatti di specificare un' +
+                    ' grafo di assemblaggio in maniera meno dettagliata.' + '\n' +
+                    'Questo non significa che un file GFA 1.0 sia sintatticamente valido e corretto per GFA 2.0.' + '\n' +
+                    'Il motivo è che sono state apportate delle modifiche alla struttura del formato come:' + '\n' +
+                    'aggiunta e rimozione di elementi e regole ' + 
+                    'rendendo così un file GFA 1.0 (senza adattamento) non sempre conforme a GFA 2.0')
 
 def main():
     try:
         # GFACompleteFilePath = sys.argv[1] # per ora non lo uso MA credo che sarebbe preferibile utilizzarlo poi
-        GFACompleteFilePath = input('Inserire il path completo del file da voler controllare: ')
+        print(disclaimerString)
+        risposta = input('Vuoi conoscere i cambiamenti effettuati da GFA 1.0 a GFA 2.0? [Y/N] ')
+        if risposta.upper() == 'Y':
+            webbrowser.open('https://github.com/GFA-spec/GFA-spec/blob/master/GFA2.md#backward-compatibility-with-gfa-1')
+        GFACompleteFilePath = input('\nInserire il path completo del file da voler controllare: ')
         # controllo che il path sia valido
         os.path.isfile(GFACompleteFilePath)
         readGFAFileLines(GFACompleteFilePath)
-        print(json.dumps(dictionaryError, indent=4, sorted_keys=False))
-        print('Programma terminato correttamente')
+        #controllo se vi sono errori da visualizzare      
+        if not errorsArray:
+            print('Il file rispetta il formato GFA 2.0')
+        else:
+            print('Il file non rispetta il formato GFA 2.0')
+            risposta = input('Vuoi conoscere la grammatica GFA 2.0? [Y/N] ')
+            if risposta.upper() == 'Y':
+                webbrowser.open('https://github.com/GFA-spec/GFA-spec/blob/master/GFA2.md#grammar')
+            print(json.dumps(errorsArray, indent=4))
+        print('\nProgramma terminato correttamente.\nChiusura programma...')
+        os._exit(1)
     except Exception as e: #catcho le eccezzioni e le stampo per capire cos'è andato storto
-        print('Qualcosa è andato storto: {}'.format(e))
+        print('Errore: {}\nChiusura programma...'.format(e))
         os._exit(1)
     
 def readGFAFileLines(GFAFilePath):
@@ -33,50 +47,54 @@ def readGFAFileLines(GFAFilePath):
         linePointer = 1
         while lineToCheck:
             LineErrorFlag = False
-            #stampe di controllo utilizzando il formato json per rendere 
-            # tutto piu' leggibile possibile
-            print(json.dumps(lineToCheck, indent=4, sort_keys=False))
-            rigaSenzaTab = re.split('\t', re.sub('\n','', lineToCheck))            
-            print(json.dumps(rigaSenzaTab, indent=4, sort_keys=False))
             headToken = lineToCheck[0]
             if headToken == 'H':
-                # la regex dovrebbe essere questa ma non funziona
-                regexH = r"H\t([A-Za-z0-9][A-Za-z0-9]:[ABHJZif]:[ -~]*)\w?\t([A-Za-z0-9][A-Za-z0-9]:[ABHJZif]:{-}[0-9]+(,{-}[0-9]+)\w*)\w?\t([A-Za-z0-9][A-Za-z0-9]:[ABHJZif]:[ -~]*)\w*"
+                # la regex dovrebbe essere questa 
+                regexH = r"H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\d+(\,\d+)*)?(\w{2}:[ABHJZif]:[ -~]*)*"
                 matchH = re.search(regexH, lineToCheck)  
                 if not matchH:
                     LineErrorFlag = True
-                    errorMex = 'Gli HEADER TAG non sono corretti!' 
             elif headToken == 'S':
-                 # la regex dovrebbe essere questa ma non funziona
-                regexS = r"S\t[!-~]+\t{-}[0-9]+(*)|[!-~]+\t([A-Za-z0-9][A-Za-z0-9]:[ABHJZif]:[ -~]*)\w*"
+                # la regex dovrebbe essere questa 
+                regexS = r"S(\t[!-~]+)(\t\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*"
                 matchS = re.search(regexS, lineToCheck)
                 if not matchS:
                     LineErrorFlag = True
-                    errorMex = 'I SEGMENT TAG non sono corretti'
             elif headToken == 'F':
-                pass
+                # la regex dovrebbe essere questa 
+                regexF = r"F(\t[!-~]+)(\t[!-~]+[+-])(\t\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\d+(\,\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*"
+                matchF = re.search(regexF, lineToCheck)
+                if not matchF:
+                    LineErrorFlag = True
             elif headToken == 'E':
-                pass
+                # la regex dovrebbe essere questa 
+                regexE = r"E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\d+(\,\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*"
+                matchE = re.search(regexE, lineToCheck)
+                if not matchE:
+                    LineErrorFlag = True
             elif headToken == 'G':
-                pass
+                # la regex dovrebbe essere questa 
+                regexG = r"G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\d+)(\t(\*|\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*"
+                matchG = re.search(regexG, lineToCheck)
+                if not matchG:
+                    LineErrorFlag = True
             elif headToken == 'O' or headToken == 'U':
-                pass
+                # la regex dovrebbe essere questa 
+                regexOU = r"(O(\t([!-~]+|\*))((\t[!-~]+[+-])([ ][!-~]+[+-])*)(\t\w{2}:[ABHJZif]:[ -~]*)*)|(U(\t([!-~]+|\*))((\t[!-~]+)([ ][!-~]+)*)(\t\w{2}:[ABHJZif]:[ -~]*)*)"
+                matchOU = re.search(regexOU, lineToCheck)
+                if not matchOU:
+                    LineErrorFlag = True
             else:
                 pass 
             # gfaErrorHandling o circa
             if LineErrorFlag:
-                GFAFileError(dictionaryError, linePointer, lineToCheck, errorMex)
+                error = ('Linea: ' + str(linePointer) 
+                        + ' Istruzione: ' + lineToCheck 
+                        + ' Non conforme al formato GFA2.')
+                errorsArray.append(error)
                 LineErrorFlag = False
             lineToCheck = GFAFileToCheck.readline()
             linePointer += 1
-
-
-def GFAFileError(errorDictionary, NRiga, TestoRiga, MessaggioErrore):
-    # si potrebbe pure creare una funzione che si occupa di accorpare le righe adiacenti di errore
-    # ad esempio se vi e' un errore nella riga 2,3,4,5 accorpare i 4 casi nel dizionario in uno che
-    # ha come key riga 2-5 errore
-    # pensavo ad una struttura del dizionario come: (key) RIGA: [numero riga], (value) ERRORE
-    errorDictionary = dict(Line=NRiga, TextLine=TestoRiga, ErrorMex=MessaggioErrore)
 
 if __name__ == '__main__':
     main()
