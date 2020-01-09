@@ -123,8 +123,7 @@ def readGFAFileLines(GFAFilePath, errorsArray):
             if not match:
                 # inserimento informazioni riguardo l'errore nell' errorsArray
                 errorsArray.append('RIGA(' + str(linePointer) + '), ' 
-                                + 'ISTRUZIONE[' 
-                                + re.sub('\t', ' ', re.sub('\n', '',  lineToCheck)) + ']')
+                                + 'ISTRUZIONE[' + lineToCheck + ']')
                 LineErrorFlag = False
             # leggo la riga successiva del file ed incremento 
             # il corrispettivo linePointer
