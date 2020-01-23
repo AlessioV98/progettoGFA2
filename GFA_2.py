@@ -99,7 +99,7 @@ def readGFAFileLines(GFAFilePath, errorsArray):
     # controllo che il file non sia vuoto altrimenti non 
     # altrimenti non e' conforme
     if os.stat(GFAFilePath).st_size == 0:
-        errorsArray.append('FILE VUOTO, NON CONFORME AL FORMATO GFA 2.0')
+        errorsArray.append('FILE VUOTO')
     else:             
         with open(GFAFilePath,'r') as GFAFileToCheck:
             # puntatore alla linea corrente
@@ -114,6 +114,17 @@ def readGFAFileLines(GFAFilePath, errorsArray):
             regexE = r"E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*"
             regexG = r"G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*" 
             regexOU = r"[OU](\t([!-~]+|\*))(((\t[!-~]+[+-])([ ][!-~]+[+-])*)|((\t[!-~]+)([ ][!-~]+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*"
+
+            # regex completa, non tiene pero' conto delle righe utente
+            # ma soprattutto non saprei come mettere a display i record line errati
+            # regex = r"(
+                    # (H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\-?\d+(\,\-?\d+)*)?(\w{2}:[ABHJZif]:[ -~]*)*)
+                    # |(S(\t[!-~]+)(\t\-?\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*)
+                    # |(F(\t[!-~]+)(\t[!-~]+[+-])(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*)
+                    # |(E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*)
+                    # |(G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*)
+                    # |([OU](\t([!-~]+|\*))(((\t[!-~]+[+-])([ ][!-~]+[+-])*)|((\t[!-~]+)([ ][!-~]+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*)
+                    # )+"
 
             # ciclo per il controllo delle regex su ogni riga del file
             while lineToCheck:
