@@ -118,13 +118,13 @@ def readGFAFileLines(GFAFilePath, errorsArray):
 
             # regex completa
             regex = re.compile(
-                'H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\-?\d+(\,\-?\d+)*)?(\t\w{2}:[ABHJZif]:[ -~]*)*'                               # regex per il controllo dell' HEADER
-                '|S(\t[!-~]+)(\t\-?\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                                            # regex per il controllo dei SEGMENT        
-                '|F(\t[!-~]+){2}[+-](\t\-?\d+\$?){4}\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*'                     # regex per il controllo dei FRAGMENT
-                '|E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*'    # regex per il controllo degli EDGE
-                '|G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                      # regex per il controllo dei GAP
-                '|[OU]\t([!-~]+|\*)(\t([!-~]+[+-]?)([ ][!-~]+[+-]?)*)(\t\w{2}:[ABHJZif]:[ -~]*)*'                                             # regex per il controllo dei GROUP               
-                '|^#[\s\w]*', re.MULTILINE)                                                                                                   # regex per il controllo dei COMMENTI                    
+                '^H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\-?\d+(\,\-?\d+)*)?(\t\w{2}:[ABHJZif]:[ -~]*)*'                               # regex per il controllo dell' HEADER
+                '|^S(\t[!-~]+)(\t\-?\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                                            # regex per il controllo dei SEGMENT        
+                '|^F(\t[!-~]+){2}[+-](\t\-?\d+\$?){4}\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*'                     # regex per il controllo dei FRAGMENT
+                '|^E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*'    # regex per il controllo degli EDGE
+                '|^G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                      # regex per il controllo dei GAP
+                '|^[OU]\t([!-~]+|\*)(\t([!-~]+[+-]?)([ ][!-~]+[+-]?)*)(\t\w{2}:[ABHJZif]:[ -~]*)*'                                             # regex per il controllo dei GROUP               
+                '|^#[\s\w]*', re.MULTILINE)                                                                                                    # regex per il controllo dei COMMENTI                    
 
             # ciclo per il controllo delle regex su ogni riga del file
             while lineToCheck:
