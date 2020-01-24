@@ -1,13 +1,19 @@
-import os           # per controllare l'esistenza di un dato file 
-                    # e per raccogliere informazioni a riguardo
-import re           # per poter utilizzare le regex 
-import json         # per la formattazione json dell'output
-                    # esteticamente gradevole e di piu' facile comprensione
-import webbrowser   # per il reindirizzamento web 
-                    # totalmente just for fun
+from pathlib2 import Path       # per controllare l'esistenza di un dato file 
+                                # e per raccogliere informazioni a riguardo
+import re                       # per poter utilizzare le regex 
+import json                     # per la formattazione json dell'output
+                                # esteticamente gradevole e di piu' facile comprensione
+import webbrowser               # per il reindirizzamento web 
+                                # totalmente just for fun
 
+
+# funzione main 'contenitore' il cui unico scopo e'
+# stampare delle info generali durante l'avvio e 
+# chiamare successivamente le funzioni adibite al corretto
+# funzionamento del programma
 def main():
     try:
+
         # rapida descrizione del programma
         print('Questo programma si occupa di controllare se un determinato '
                 + 'file rispetti o meno la grammatica e semantica di un determinato ' 
@@ -24,27 +30,28 @@ def main():
 
         # stampa informazioni riguardo il programma
         PrintInfo()
-        # funzione per l-acquisizione di un file
+
+        # funzione per l'acquisizione di un file
         FileInput()
         
     # gestione eccezioni 
     except Exception as e: 
-        print('Errore: {}'.format(e))
-        risposta = input('Controllare un nuovo file? [Y/N]\n')
-        if risposta.upper() == 'Y':
-                FileInput()
+        print('Si e verificato un errore durante l esecuzione del programma: {}'.format(e))
+        ClosedProgram()
 
-    # funzione per terminazione programma            
-    ClosedProgram()
-
+# funzione per la chiusura dell'applicazione
 def ClosedProgram(): 
+
     # direttiva dell' OS per la chiusura dell'applicazione
     # la traduzione in ita non mi piace 
-    risposta = input('Press any key to terminate the program...')
+    risposta = input('Press ENTER to terminate the program...')
     if risposta:
-        os._exit(1)
+        raise SystemExit
 
+# funzione per la stampa delle informazioni e redirezione
+# verso pagina GitHub del progetto
 def PrintInfo():
+
     # acquisisco la risposta dell'utente
     risposta = input('Vuoi conoscere tutti i cambiamenti che sono '
                     + 'stati apportati da GFA 1.0 a GFA 2.0?' 
@@ -63,10 +70,12 @@ def PrintInfo():
         # https://bit.ly/36DGXmq = https://github.com/GFA-spec/GFA-spec/
                                 # blob/master/GFA2.md#grammar
 
+# funzione per l'acquisizione di un file e il controllo della sua esistenza
 def FileInput():
     GFAFile = input('\nInserire il nome del file da voler controllare: ')
+
     # controllo che il path del file sia valido
-    if not os.path.isfile(GFAFile):
+    if not Path(GFAFile).absolute().is_file():
         print('Errore: {} File inesistente'.format(GFAFile))
         risposta = input('Controllare un nuovo file? [Y/N]\n')
         if risposta.upper() == 'Y':
@@ -76,7 +85,7 @@ def FileInput():
     # array per tenere traccia degli errori presenti nel file
     errorsArray = []
     # chiamata funzione per controllo conformita' file
-    readGFAFileLines(os.path.abspath(GFAFile), errorsArray)
+    readGFAFileLines(Path(GFAFile).absolute(), errorsArray)
 
     # controllo se vi sono errori da visualizzare      
     if not errorsArray:
@@ -91,14 +100,14 @@ def FileInput():
     risposta = input('Controllare un nuovo file? [Y/N]\n')
     if risposta.upper() == 'Y':
         FileInput()
+    ClosedProgram()
 
-# funzione per il controllo della conformita' di un file
-# al formato GFA 2.0    
+# funzione per il controllo della conformita' di un file al formato GFA 2.0    
 def readGFAFileLines(GFAFilePath, errorsArray):   
 
     # controllo che il file non sia vuoto altrimenti non 
     # altrimenti non e' conforme
-    if os.stat(GFAFilePath).st_size == 0:
+    if GFAFilePath.stat().st_size == 0:
         errorsArray.append('FILE VUOTO')
     else:             
         with open(GFAFilePath,'r') as GFAFileToCheck:
@@ -106,52 +115,20 @@ def readGFAFileLines(GFAFilePath, errorsArray):
             lineToCheck = GFAFileToCheck.readline()
             linePointer = 1
 
-            # inizializzo le variabili regex utili per il controllo dei differenti elementi
-            # appartenenti al formato GFA 2.0
-            regexH = r"H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\-?\d+(\,\-?\d+)*)?(\w{2}:[ABHJZif]:[ -~]*)*"
-            regexS = r"S(\t[!-~]+)(\t\-?\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*"
-            regexF = r"F(\t[!-~]+)(\t[!-~]+[+-])(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*" 
-            regexE = r"E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*"
-            regexG = r"G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*" 
-            regexOU = r"[OU](\t([!-~]+|\*))(((\t[!-~]+[+-])([ ][!-~]+[+-])*)|((\t[!-~]+)([ ][!-~]+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*"
-            regexCOMMENT = r"#(\s\w*)*"
-
-            # regex completa, non tiene pero' conto delle righe utente
-            # ma soprattutto non saprei come mettere a display i record line errati
-            # regex = r"(
-                    # (H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\-?\d+(\,\-?\d+)*)?(\w{2}:[ABHJZif]:[ -~]*)*)
-                    # |(S(\t[!-~]+)(\t\-?\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*)
-                    # |(F(\t[!-~]+)(\t[!-~]+[+-])(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*)
-                    # |(E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*)
-                    # |(G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*)
-                    # |([OU](\t([!-~]+|\*))(((\t[!-~]+[+-])([ ][!-~]+[+-])*)|((\t[!-~]+)([ ][!-~]+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*)
-                    # )+(^#(\s\w*)*)"
+            # regex completa
+            regex = re.compile(
+                '((H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\-?\d+(\,\-?\d+)*)?(\w{2}:[ABHJZif]:[ -~]*)*)'                                # regex per il controllo dell' HEADER
+                '|(S(\t[!-~]+)(\t\-?\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*)'                                                            # regex per il controllo dei SEGMENT        
+                '|(F(\t[!-~]+)(\t[!-~]+[+-])(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*)'            # regex per il controllo dei FRAGMENT
+                '|(E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*)'    # regex per il controllo degli EDGE
+                '|(G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*)'                                      # regex per il controllo dei GAP
+                '|([OU](\t([!-~]+|\*))(((\t[!-~]+[+-])([ ][!-~]+[+-])*)|((\t[!-~]+)([ ][!-~]+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*))+'                # regex per il controllo dei GROUP
+                '|(^#(\s\w*)*)', re.MULTILINE)                                                                                                  # regex per il controllo dei COMMENTI                    
 
             # ciclo per il controllo delle regex su ogni riga del file
             while lineToCheck:
-                match = False
-                headToken = lineToCheck[0]
-
-                # per essere una linea valida (quindi una record line), l'headToken 
-                # deve essere uno tra i seguenti [H, S, F, E, G, O, U], 
-                # se fosse = # allora viene considerata come riga commento
-                # altrimenti la riga è considerata errata
-                if headToken == 'H':                
-                    match = re.search(regexH, lineToCheck)  
-                elif headToken == 'S':               
-                    match = re.search(regexS, lineToCheck)
-                elif headToken == 'F':
-                    match = re.search(regexF, lineToCheck)
-                elif headToken == 'E':
-                    match = re.search(regexE, lineToCheck)
-                elif headToken == 'G':
-                    match = re.search(regexG, lineToCheck)
-                elif headToken == 'O' or headToken == 'U':
-                    match = re.search(regexOU, lineToCheck)
-                elif headToken == '#':
-                    match = re.search(regexCOMMENT, lineToCheck)
-                else:
-                    match = False 
+                match = False               
+                match = regex.search(lineToCheck)
 
                 # controllo eventuali righe non conformi 
                 if not match:
@@ -161,5 +138,6 @@ def readGFAFileLines(GFAFilePath, errorsArray):
                 lineToCheck = GFAFileToCheck.readline()
                 linePointer += 1
 
+# inizializzazione main e avvio
 if __name__ == '__main__':
     main()
