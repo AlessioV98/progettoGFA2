@@ -37,7 +37,9 @@ def main():
     # gestione eccezioni 
     except Exception as e: 
         print('Si e verificato un errore durante l esecuzione del programma: {}'.format(e))
-        ClosedProgram()
+
+    # termine del programma
+    ClosedProgram()
 
 # funzione per la chiusura dell'applicazione
 def ClosedProgram(): 
@@ -80,7 +82,7 @@ def FileInput():
         risposta = input('Controllare un nuovo file? [Y/N]\n')
         if risposta.upper() == 'Y':
             FileInput()
-        ClosedProgram()
+        return
            
     # array per tenere traccia degli errori presenti nel file
     errorsArray = []
@@ -100,13 +102,12 @@ def FileInput():
     risposta = input('Controllare un nuovo file? [Y/N]\n')
     if risposta.upper() == 'Y':
         FileInput()
-    ClosedProgram()
+    return
 
 # funzione per il controllo della conformita' di un file al formato GFA 2.0    
 def readGFAFileLines(GFAFilePath, errorsArray):   
 
-    # controllo che il file non sia vuoto altrimenti non 
-    # altrimenti non e' conforme
+    # controllo che il file non sia vuoto 
     if GFAFilePath.stat().st_size == 0:
         errorsArray.append('FILE VUOTO')
     else:             
