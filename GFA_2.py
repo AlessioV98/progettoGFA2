@@ -114,6 +114,7 @@ def readGFAFileLines(GFAFilePath, errorsArray):
             regexE = r"E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*"
             regexG = r"G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*" 
             regexOU = r"[OU](\t([!-~]+|\*))(((\t[!-~]+[+-])([ ][!-~]+[+-])*)|((\t[!-~]+)([ ][!-~]+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*"
+            regexCOMMENT = r"#(\s\w*)*"
 
             # regex completa, non tiene pero' conto delle righe utente
             # ma soprattutto non saprei come mettere a display i record line errati
@@ -124,16 +125,17 @@ def readGFAFileLines(GFAFilePath, errorsArray):
                     # |(E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*)
                     # |(G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*)
                     # |([OU](\t([!-~]+|\*))(((\t[!-~]+[+-])([ ][!-~]+[+-])*)|((\t[!-~]+)([ ][!-~]+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*)
-                    # )+"
+                    # )+(^#(\s\w*)*)"
 
             # ciclo per il controllo delle regex su ogni riga del file
             while lineToCheck:
-                match = True
+                match = False
                 headToken = lineToCheck[0]
 
-                # per essere una linea valida, l'headToken deve essere uno tra i seguenti
-                # [H, S, F, E, G, O, U], altrimenti viene ignorata e considerata una riga 
-                # commento oppure una riga custom dell'utente per particolari procedure
+                # per essere una linea valida (quindi una record line), l'headToken 
+                # deve essere uno tra i seguenti [H, S, F, E, G, O, U], 
+                # se fosse = # allora viene considerata come riga commento
+                # altrimenti la riga è considerata errata
                 if headToken == 'H':                
                     match = re.search(regexH, lineToCheck)  
                 elif headToken == 'S':               
@@ -146,12 +148,12 @@ def readGFAFileLines(GFAFilePath, errorsArray):
                     match = re.search(regexG, lineToCheck)
                 elif headToken == 'O' or headToken == 'U':
                     match = re.search(regexOU, lineToCheck)
-                elif headToken == ' ':
-                    match = False
+                elif headToken == '#':
+                    match = re.search(regexCOMMENT, lineToCheck)
                 else:
-                    pass 
+                    match = False 
 
-                # controllo eventuali righe con non conformi 
+                # controllo eventuali righe non conformi 
                 if not match:
                     errorsArray.append('RIGA(' + str(linePointer) + '), ' 
                                     + 'ISTRUZIONE[' + lineToCheck + ']')
