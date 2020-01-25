@@ -18,8 +18,7 @@ def main():
         print('Questo programma si occupa di controllare se un determinato '
                 + 'file rispetti o meno la grammatica e semantica di un determinato ' 
                 + 'linguaggio (o formato).' + '\n'
-                + 'Il formato in questione è il Graphical Fragment Assembly (GFA) 2.0.' 
-                + '\n')
+                + 'Il formato in questione è il Graphical Fragment Assembly (GFA) 2.0.')
 
         # rapida descrizione del formato GFA 2.0
         print('Il formato GFA 2.0 è una generalizzazione del formato GFA 1.0, '
