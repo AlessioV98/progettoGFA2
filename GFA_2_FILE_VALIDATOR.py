@@ -23,9 +23,7 @@ def main():
         # rapida descrizione del formato GFA 2.0
         print('Il formato GFA 2.0 è una generalizzazione del formato GFA 1.0, '
                 + 'permette infatti di specificare un grafo di assemblaggio in '
-                + 'maniera meno dettagliata.' + '\n' 
-                + 'Non sempre un file GFA 1.0 e conforme alla grammatica ' 
-                + 'e semantica GFA 2.0' + '\n') 
+                + 'maniera meno dettagliata.' + '\n') 
 
         # stampa informazioni riguardo il programma
         PrintInfo()
@@ -76,7 +74,7 @@ def FileInput():
     GFAFile = input('\nInserire il nome del file da voler controllare: ')
 
     # controllo che il path del file sia valido
-    if not Path(GFAFile).absolute().is_file():
+    if not Path(GFAFile).resolve().is_file():
         print('Errore: {} File inesistente'.format(GFAFile))
         risposta = input('Controllare un nuovo file? [Y/N]\n')
         if risposta.upper() == 'Y':
@@ -86,7 +84,7 @@ def FileInput():
     # array per tenere traccia degli errori presenti nel file
     errorsArray = []
     # chiamata funzione per controllo conformita' file
-    readGFAFileLines(Path(GFAFile).absolute(), errorsArray)
+    readGFAFileLines(Path(GFAFile).resolve(), errorsArray)
 
     # controllo se vi sono errori da visualizzare      
     if not errorsArray:
