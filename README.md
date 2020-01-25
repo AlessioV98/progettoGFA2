@@ -79,7 +79,8 @@ La sintassi di un file GFA 2.0 deve rispettare le seguenti regole per essere val
 4. Il simbolo **#** permette all'utente di specificare delle righe *commento* e quindi **ignorate** in fase di analisi
 
 ```
-A differenza del progetto originale, in cui ogni riga non iniziante con il simbolo [H, S, F, E, G, O, U] viene ignorata in quanto riga utente  utile per permettere a quest'ultimo di creare record-line speciali,
+A differenza del progetto originale, in cui ogni riga non iniziante con il simbolo [H, S, F, E, G, O, U] 
+viene ignorata in quanto riga utente  utile per permettere a quest'ultimo di creare record-line speciali,
 In questo progetto ogni riga NON iniziante con i simboli [H, S, F, E, G, O, U oppure #] viene considerata errata.
 ```
 
