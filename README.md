@@ -124,6 +124,7 @@ Le funzioni al contorno di questo progetto, ovvero tutte quelle che permettono i
 2. Funzione **ClosedProgram**
 3. Funzione **PrintInfo**
 4. Funzione **FileInput**
+5. Funzione **CreateFile**
 
 la funzione piu' interessante delle 4 e' sicuramente **FileInput** la quale si preoccupa di:
 
@@ -136,6 +137,11 @@ exist = Path(File).absolute.is_file()   # True se esiste, False altrimenti
 
 3. Chiamo la funzione **readGFAFileLines**
 4. Controllo se la lista **errorsArray** e' vuota, altrimenti la stampo a video
+
+    1. Se è vuota non stampo nulla
+    2. Se **non** è vuota e la dimensione di **errorsArray** è < 145 allora la stampo a video (questo a causa di una limitazione sul numero di caratteri che possono venir stampati a video dalla *console **Windows*** (**8191**))
+    3. Altrimenti chiedo all'utente se vuole salvare in un file la lista **errorsArray** e in caso affermativo, chiamo la funzione **CreateFile** che si occuperà di creare nella stessa *directory* di **GFAFile** un file chiamato **errorsFile.txt** dove saranno salvati tutti gli errori presenti in **errorsArray**
+
 5. Chiedo infine, se si vuole analizzare un altro file, altrimenti chiudo lo script
 
 

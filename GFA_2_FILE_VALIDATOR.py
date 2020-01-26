@@ -33,7 +33,7 @@ def main():
         
     # gestione eccezioni 
     except Exception as e: 
-        print('Si e verificato un errore durante l esecuzione del programma: {}'.format(e))
+        print('Si è verificato un errore durante l esecuzione del programma: {}'.format(e))
 
     # termine del programma
     ClosedProgram()
@@ -72,10 +72,11 @@ def PrintInfo():
 # funzione per l'acquisizione di un file e il controllo della sua esistenza
 def FileInput():
     GFAFile = input('\nInserire il nome del file da voler controllare: ')
+    GFAFilePath = Path(GFAFile).resolve()
 
     # controllo che il path del file sia valido
-    if not Path(GFAFile).resolve().is_file():
-        print('Errore: {} File inesistente'.format(GFAFile))
+    if not GFAFilePath.is_file():
+        print('Errore: {} file inesistente'.format(GFAFile))
         risposta = input('Controllare un nuovo file? [Y/N]\n')
         if risposta.upper() == 'Y':
             FileInput()
@@ -84,22 +85,37 @@ def FileInput():
     # array per tenere traccia degli errori presenti nel file
     errorsArray = []
     # chiamata funzione per controllo conformita' file
-    readGFAFileLines(Path(GFAFile).resolve(), errorsArray)
+    readGFAFileLines(GFAFilePath, errorsArray)
 
     # controllo se vi sono errori da visualizzare      
     if not errorsArray:
         print('IL FILE RISPETTA IL FORMATO GFA 2.0')
-    else:
+    elif len(errorsArray) <= 145:
         # stampa errori
         print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: ')
         print(json.dumps(errorsArray, indent=4))
+    else:
+        print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: \n'
+            + 'Essendo un file molto grande, non è possibile visualizzare tutti gli errori '
+            + 'per via di una limitazione del CMD sulla lunghezza delle stringhe.')
+        risposta = input('Desideri che venga creato un file contenente la lista degli errori? [Y/N]\n')
+        if risposta.upper() == 'Y':
+            CreateFile(errorsArray, GFAFilePath)
     
     # termino il programma correttamente                 
-    print('Analisi file terminata correttamente.')
+    print('\nAnalisi file terminata correttamente.')
     risposta = input('Controllare un nuovo file? [Y/N]\n')
     if risposta.upper() == 'Y':
         FileInput()
     return
+
+# funzione per la gestione e creazione di file d'errore di grandi dimensioni
+def CreateFile(errorsArray, GFAFilePath):
+    pathToSave = Path(GFAFilePath).parent
+    errorsFile = 'errorsFile.txt'
+    with open(Path(pathToSave).joinpath(errorsFile), 'w') as tempFile:
+        tempFile.writelines(errorsArray)
+    print('File creato correttamente nella directory: {} '.format(pathToSave))
 
 # funzione per il controllo della conformita' di un file al formato GFA 2.0    
 def readGFAFileLines(GFAFilePath, errorsArray):   
