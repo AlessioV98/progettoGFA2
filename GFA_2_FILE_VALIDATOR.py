@@ -36,11 +36,6 @@ def main():
         print('Si è verificato un errore durante l esecuzione del programma: {}'.format(e))
 
     # termine del programma
-    ClosedProgram()
-
-# funzione per la chiusura dell'applicazione
-def ClosedProgram(): 
-
     # direttiva dell' OS per la chiusura dell'applicazione
     # la traduzione in ita non mi piace 
     risposta = input('Press ENTER to terminate the program...')
