@@ -95,7 +95,7 @@ La funzione principale del progetto e' la funzione **readGFAFileLines** che pren
 1. Il percorso di un file (**GFAFilePath**)
 2. Una lista dove dove verranno salvati eventuali righe errate del file (**errorsArray**)
 
-Questa funzione consiste principalmente in 
+Questa funzione consiste principalmente in: 
 
 1. Controllo per assicurarsi che il percorso passato in input sia associato ad un file non vuoto
 2. Apertura del file in modalita' *lettura* (**r**) ed inizializzazione di 3 importanti variabili
@@ -115,7 +115,7 @@ regex = re.compile(
                 '|^#[\s\w]*', re.MULTILINE)     
 ```
 
-3. Ciclo che controlla finche la variabile *lineToCheck* non e' vuota se vi e' un match tra *regex* e *lineToCheck*, altrimenti viene inserita *lineToCheck* nella lista *errorsArray* insieme al suo rispettivo *linePointer* 
+3. Ciclo che controlla finche la variabile *lineToCheck* non e' vuota se vi e' un **match** tra *regex* e *lineToCheck*, altrimenti viene inserita *lineToCheck* nella lista *errorsArray* insieme al suo rispettivo *linePointer* 
 
 ## FUNZIONI AL CONTORNO
 Le funzioni al contorno di questo progetto, ovvero tutte quelle che permettono il corretto funzionamento di quest'ultimo sono:
