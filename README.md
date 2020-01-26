@@ -1,5 +1,5 @@
 # VALIDATORE PER FILE GFA 2.0
-Questo e' un progetto universitario, sviluppato in **python** da:
+Questo e' un progetto universitario, sviluppato da:
 
 1. Morlacchi Giorgia     matricola 797741
 2. Stievano Matteo       matricola 829535
