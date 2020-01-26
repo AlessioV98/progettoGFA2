@@ -121,10 +121,9 @@ regex = re.compile(
 Le funzioni al contorno di questo progetto, ovvero tutte quelle che permettono il corretto funzionamento di quest'ultimo sono:
 
 1. Funzione **main**
-2. Funzione **ClosedProgram**
-3. Funzione **PrintInfo**
-4. Funzione **FileInput**
-5. Funzione **CreateFile**
+2. Funzione **PrintInfo**
+3. Funzione **FileInput**
+4. Funzione **CreateFile**
 
 la funzione piu' interessante delle 4 e' sicuramente **FileInput** la quale si preoccupa di:
 
