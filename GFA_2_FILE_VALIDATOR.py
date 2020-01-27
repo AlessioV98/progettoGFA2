@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-15 -*-
 from pathlib2 import Path       # per controllare l'esistenza di un dato file 
                                 # e per raccogliere informazioni a riguardo
 import re                       # per poter utilizzare le regex 
