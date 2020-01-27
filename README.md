@@ -106,13 +106,13 @@ Questa funzione consiste principalmente in:
 
 ```python
 regex = re.compile(
-                '^H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\-?\d+(\,\-?\d+)*)?(\t\w{2}:[ABHJZif]:[ -~]*)*'                               # regex per il controllo dell' HEADER
-                '|^S(\t[!-~]+)(\t\-?\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                                            # regex per il controllo dei SEGMENT        
-                '|^F(\t[!-~]+){2}[+-](\t\-?\d+\$?){4}\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*'                     # regex per il controllo dei FRAGMENT
-                '|^E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*'    # regex per il controllo degli EDGE
-                '|^G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                      # regex per il controllo dei GAP
-                '|^[OU]\t([!-~]+|\*)(\t([!-~]+[+-]?)([ ][!-~]+[+-]?)*)(\t\w{2}:[ABHJZif]:[ -~]*)*'                                             # regex per il controllo dei GROUP               
-                '|^#[\s\w]*', re.MULTILINE)     
+    '^H(\t\w{2}:[ABHJZif]:[ -~]*)?(\t\w{2}:[ABHJZif]:\-?\d+(\,\-?\d+)*)?(\t\w{2}:[ABHJZif]:[ -~]*)*'                               # regex per il controllo dell' HEADER
+    '|^S(\t[!-~]+)(\t\-?\d+)(\t(\*|[!-~]+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                                            # regex per il controllo dei SEGMENT        
+    '|^F(\t[!-~]+){2}[+-](\t\-?\d+\$?){4}\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*))(\t\w{2}:[ABHJZif]:[ -~]*)*'                     # regex per il controllo dei FRAGMENT
+    '|^E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*'    # regex per il controllo degli EDGE
+    '|^G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                      # regex per il controllo dei GAP
+    '|^[OU]\t([!-~]+|\*)(\t([!-~]+[+-]?)([ ][!-~]+[+-]?)*)(\t\w{2}:[ABHJZif]:[ -~]*)*'                                             # regex per il controllo dei GROUP               
+    '|^#[\s\w]*', re.MULTILINE)     
 ```
 
 3. Ciclo che controlla finche la variabile *lineToCheck* non e' vuota se vi e' un **match** tra *regex* e *lineToCheck*, altrimenti viene inserita *lineToCheck* nella lista *errorsArray* insieme al suo rispettivo *linePointer* 
@@ -131,7 +131,7 @@ la funzione piu' interessante delle 4 e' sicuramente **FileInput** la quale si p
 2. Controllare che tale file esista sul computer grazie alla funzione importata dalla libreria **pathlib2**
 
 ```python
-exist = Path(File).absolute.is_file()   # True se esiste, False altrimenti
+exist = Path(File).resolve().is_file()   # True se esiste, False altrimenti
 ```
 
 3. Chiamo la funzione **readGFAFileLines**

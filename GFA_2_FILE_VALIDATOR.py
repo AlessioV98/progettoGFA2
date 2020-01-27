@@ -107,7 +107,7 @@ def FileInput():
 # funzione per la gestione e creazione di file d'errore di grandi dimensioni
 def CreateFile(errorsArray, GFAFilePath):
     pathToSave = Path(GFAFilePath).parent
-    errorsFile = 'errorsFile.txt'
+    errorsFile = 'errors_' + Path(GFAFilePath).name + '.txt'
     with open(Path(pathToSave).joinpath(errorsFile), 'w') as tempFile:
         tempFile.writelines(errorsArray)
     print('File creato correttamente nella directory: {} '.format(pathToSave))
