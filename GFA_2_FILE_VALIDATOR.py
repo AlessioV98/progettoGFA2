@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: iso-8859-15 -*-
 
 from pathlib2 import Path       # per controllare l'esistenza di un dato file 
