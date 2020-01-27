@@ -51,6 +51,7 @@ def PrintInfo():
     risposta = input('Vuoi conoscere tutti i cambiamenti che sono '
                     + 'stati apportati da GFA 1.0 a GFA 2.0?' 
                     + '[Y/N]\n')
+    print(risposta)
     if risposta.upper() == 'Y':
         webbrowser.open('https://bit.ly/2FsZXrM')
         # indirizzamento (1) verso risorsa github 
