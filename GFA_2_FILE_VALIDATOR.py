@@ -51,7 +51,6 @@ def PrintInfo():
     risposta = input('Vuoi conoscere tutti i cambiamenti che sono '
                     + 'stati apportati da GFA 1.0 a GFA 2.0?' 
                     + '[Y/N]'+ '\n')
-    print(risposta)
     if risposta.upper() == 'Y':
         webbrowser.open('https://bit.ly/2FsZXrM')
         # indirizzamento (1) verso risorsa github 
@@ -74,7 +73,7 @@ def FileInput():
     # controllo che il path del file sia valido
     if not GFAFilePath.is_file():
         print('Errore: {} file inesistente'.format(GFAFile))
-        risposta = input('Controllare un nuovo file? [Y/N]\n')
+        risposta = input('Controllare un nuovo file? [Y/N]'+ '\n')
         if risposta.upper() == 'Y':
             FileInput()
         return
@@ -92,16 +91,16 @@ def FileInput():
         print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: ')
         print(json.dumps(errorsArray, indent=4))
     else:
-        print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: \n'
+        print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: '+ '\n'
             + 'Essendo un file molto grande, non è possibile visualizzare tutti gli errori '
             + 'per via di una limitazione del CMD sulla lunghezza delle stringhe.')
-        risposta = input('Desideri che venga creato un file contenente la lista degli errori? [Y/N]\n')
+        risposta = input('Desideri che venga creato un file contenente la lista degli errori? [Y/N]'+ '\n')
         if risposta.upper() == 'Y':
             CreateFile(errorsArray, GFAFilePath)
     
     # termino il programma correttamente                 
     print('\nAnalisi file terminata correttamente.')
-    risposta = input('Controllare un nuovo file? [Y/N]\n')
+    risposta = input('Controllare un nuovo file? [Y/N]'+ '\n')
     if risposta.upper() == 'Y':
         FileInput()
     return
@@ -150,5 +149,4 @@ def readGFAFileLines(GFAFilePath, errorsArray):
                 linePointer += 1
 
 # inizializzazione main e avvio
-if __name__ == '__main__':
-    main()
+main()
