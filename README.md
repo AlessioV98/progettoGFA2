@@ -89,6 +89,8 @@ Il progetto e' stato sviluppato in **python 3.7.6** con il supporto dell'environ
 
 L'editor utilizzato sia per lo sviluppo che per il debug dello script python e' **Visual Studio Code**
 
+Il progetto è stato anche testato in ambiente **Linux** su un computer con **ElementaryOS**, una distribuzione di *Ubuntu*, risultando funzionante.
+
 ## FUNZIONE PRINCIPALE PROGETTO
 La funzione principale del progetto e' la funzione **readGFAFileLines** che prende come argomenti
 
@@ -112,7 +114,7 @@ regex = re.compile(
     '|^E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*'    # regex per il controllo degli EDGE
     '|^G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                      # regex per il controllo dei GAP
     '|^[OU]\t([!-~]+|\*)(\t([!-~]+[+-]?)([ ][!-~]+[+-]?)*)(\t\w{2}:[ABHJZif]:[ -~]*)*'                                             # regex per il controllo dei GROUP               
-    '|^#[\s\w]*', re.MULTILINE)     
+    '|^#[\s\w]*')                                                                                                                  # regex per il controllo dei COMMENTI
 ```
 
 3. Ciclo che controlla finche la variabile *lineToCheck* non e' vuota se vi e' un **match** tra *regex* e *lineToCheck*, altrimenti viene inserita *lineToCheck* nella lista *errorsArray* insieme al suo rispettivo *linePointer* 
@@ -138,9 +140,9 @@ exist = Path(File).resolve().is_file()   # True se esiste, False altrimenti
 4. Controllo se la lista **errorsArray** e' vuota, altrimenti la stampo a video
 
     1. Se è vuota non stampo nulla
-    2. Se **non** è vuota e la dimensione di **errorsArray** è < 145 allora la stampo a video (questo a causa di una limitazione sul numero di caratteri che possono venir stampati a video dalla *console **Windows*** (**8191**))
-    3. Altrimenti chiedo all'utente se vuole salvare in un file la lista **errorsArray** e in caso affermativo, chiamo la funzione **CreateFile** che si occuperà di creare nella stessa *directory* di **GFAFile** un file chiamato **errorsFile.txt** dove saranno salvati tutti gli errori presenti in **errorsArray**
+    2. Se **non** è vuota e la dimensione di **errorsArray** è < 145 allora la stampo a video (questo a causa di una limitazione sul numero di caratteri che possono venir stampati a video dalla *console **Windows*** (**8192**))
+    3. Altrimenti chiedo all'utente se vuole salvare in un file la lista **errorsArray** e in caso affermativo, chiamo la funzione **CreateFile** che si occuperà di creare nella stessa *directory* di **GFAFile** un file chiamato **errors_(nomeFile.gfa).txt** dove saranno salvati tutti gli errori presenti in **errorsArray**
 
-5. Chiedo infine, se si vuole analizzare un altro file, altrimenti chiudo lo script
+5. Chiedo infine, se si vuole analizzare un altro file, altrimenti termino lo script
 
 

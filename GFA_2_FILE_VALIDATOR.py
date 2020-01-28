@@ -15,6 +15,7 @@ import webbrowser               # per il reindirizzamento web
 # chiamare successivamente le funzioni adibite al corretto
 # funzionamento del programma
 def main():
+
     try:
 
         # rapida descrizione del programma
@@ -52,7 +53,7 @@ def PrintInfo():
     # acquisisco la risposta dell'utente
     risposta = input('Vuoi conoscere tutti i cambiamenti che sono '
                     + 'stati apportati da GFA 1.0 a GFA 2.0?' 
-                    + '[Y/N]'+ '\n')
+                    + '[Y/N]' + '\n')
     if risposta.upper() == 'Y':
         webbrowser.open('https://bit.ly/2FsZXrM')
         # indirizzamento (1) verso risorsa github 
@@ -60,7 +61,7 @@ def PrintInfo():
                                 # master/GFA2.md#backward-compatibility-with-gfa-1 
 
     risposta = input('Vuoi conoscere la grammatica '
-                        + 'del formato GFA 2.0? [Y/N]'+ '\n')
+                    + 'del formato GFA 2.0? [Y/N]' + '\n')
     if risposta.upper() == 'Y':
         webbrowser.open('https://bit.ly/36DGXmq')     
         # indirizzamento (2) verso risorsa github
@@ -69,13 +70,14 @@ def PrintInfo():
 
 # funzione per l'acquisizione di un file e il controllo della sua esistenza
 def FileInput():
-    GFAFile = input('\nInserire il nome del file da voler controllare: ')
+
+    GFAFile = input('\n' + 'Inserire il file da voler controllare: ')
     GFAFilePath = Path(GFAFile).resolve()
 
     # controllo che il path del file sia valido
     if not GFAFilePath.is_file():
         print('Errore: {} file inesistente'.format(GFAFile))
-        risposta = input('Controllare un nuovo file? [Y/N]'+ '\n')
+        risposta = input('Controllare un nuovo file? [Y/N]' + '\n')
         if risposta.upper() == 'Y':
             FileInput()
         return
@@ -93,26 +95,30 @@ def FileInput():
         print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: ')
         print(json.dumps(errorsArray, indent=4))
     else:
-        print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: '+ '\n'
+        print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: ' + '\n'
             + 'Essendo un file molto grande, non è possibile visualizzare tutti gli errori '
             + 'per via di una limitazione del CMD sulla lunghezza delle stringhe.')
-        risposta = input('Desideri che venga creato un file contenente la lista degli errori? [Y/N]'+ '\n')
+        risposta = input('Desideri che venga creato un file contenente la lista degli errori? [Y/N]' + '\n')
         if risposta.upper() == 'Y':
             CreateFile(errorsArray, GFAFilePath)
     
     # termino il programma correttamente                 
-    print('\nAnalisi file terminata correttamente.')
-    risposta = input('Controllare un nuovo file? [Y/N]'+ '\n')
+    print('\n' + 'Analisi file terminata correttamente.')
+    risposta = input('Controllare un nuovo file? [Y/N]' + '\n')
     if risposta.upper() == 'Y':
         FileInput()
     return
 
 # funzione per la gestione e creazione di file d'errore di grandi dimensioni
 def CreateFile(errorsArray, GFAFilePath):
+
     pathToSave = Path(GFAFilePath).parent
     errorsFile = 'errors_' + Path(GFAFilePath).name + '.txt'
+
+    # creo un nuovo file e ci scrivo dentro
     with open(Path(pathToSave).joinpath(errorsFile), 'w') as tempFile:
         tempFile.writelines(errorsArray)
+
     print('File creato correttamente nella directory: {} '.format(pathToSave))
 
 # funzione per il controllo della conformita' di un file al formato GFA 2.0    
@@ -123,6 +129,7 @@ def readGFAFileLines(GFAFilePath, errorsArray):
         errorsArray.append('FILE VUOTO')
     else:             
         with open(GFAFilePath,'r') as GFAFileToCheck:
+
             # puntatore alla linea corrente
             lineToCheck = GFAFileToCheck.readline()
             linePointer = 1
@@ -135,7 +142,7 @@ def readGFAFileLines(GFAFilePath, errorsArray):
                 '|^E(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+\$?){4}(\t((\*)|(\d+[MDIP])+|(\-?\d+(\,\-?\d+)*)))(\t\w{2}:[ABHJZif]:[ -~]*)*'    # regex per il controllo degli EDGE
                 '|^G(\t([!-~]+|\*))(\t[!-~]+[+-]){2}(\t\-?\d+)(\t(\*|\-?\d+))(\t\w{2}:[ABHJZif]:[ -~]*)*'                                      # regex per il controllo dei GAP
                 '|^[OU]\t([!-~]+|\*)(\t([!-~]+[+-]?)([ ][!-~]+[+-]?)*)(\t\w{2}:[ABHJZif]:[ -~]*)*'                                             # regex per il controllo dei GROUP               
-                '|^#[\s\w]*', re.MULTILINE)                                                                                                    # regex per il controllo dei COMMENTI                    
+                '|^#[\s\w]*')                                                                                                                  # regex per il controllo dei COMMENTI                    
 
             # ciclo per il controllo delle regex su ogni riga del file
             while lineToCheck:
@@ -151,4 +158,5 @@ def readGFAFileLines(GFAFilePath, errorsArray):
                 linePointer += 1
 
 # inizializzazione main e avvio
-main()
+if __name__ == "__main__":
+    main()
