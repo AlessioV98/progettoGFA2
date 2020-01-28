@@ -6,7 +6,6 @@ Questo e' un progetto universitario, sviluppato da:
 3. Villani Alessio       matricola 830075
 
 in cui si cerca di sviluppare un validatore per file in formato **G**raphical **F**ragment **A**ssembly (**GFA**) versione 2.0.
-
 Questo significa che dato un file, si controlla se il suo contenuto e' conforme alle regole grammaticali del formato GFA 2.0 mediante l'uso di **REGEXP**.
 
 ## GRAMMATICA GFA 2.0
@@ -86,9 +85,7 @@ In questo progetto ogni riga NON iniziante con i simboli [H, S, F, E, G, O, U op
 
 # DESCRIZIONE PROGETTO
 Il progetto e' stato sviluppato in **python 3.7.6** con il supporto dell'environment **Anaconda3** in ambiente **Windows 10**.
-
-L'editor utilizzato sia per lo sviluppo che per il debug dello script python e' **Visual Studio Code**
-
+L'editor utilizzato sia per lo sviluppo che per il debug dello script python e' **Visual Studio Code**.
 Il progetto è stato anche testato in ambiente **Linux** su un computer con **ElementaryOS**, una distribuzione di *Ubuntu*, risultando funzionante.
 
 ## FUNZIONE PRINCIPALE PROGETTO
