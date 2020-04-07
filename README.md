@@ -93,7 +93,9 @@ In questo progetto ogni riga NON iniziante con i simboli [H, S, F, E, G, O, U op
 
 Il progetto e' stato sviluppato in **python 3.7.6** con il supporto dell'environment **Anaconda3** in ambiente **Windows 10**.
 L'editor utilizzato sia per lo sviluppo che per il debug dello script python e' **Visual Studio Code**.
-Il progetto è stato anche testato in ambiente **Linux** su un computer con **ElementaryOS**, una distribuzione di *Ubuntu*, risultando funzionante.
+Il progetto è stato anche testato in:
+1. Ambiente **Linux** su un computer con **ElementaryOS**, una distribuzione **GNU/Linux** basata su *Ubuntu*, risultando funzionante.
+2. Ambiente **Linux** su una macchina virtuale (*VirtualBox*) con **Ubuntu 18.04**, risultando funzionante. 
 
 ## FUNZIONE PRINCIPALE PROGETTO
 
