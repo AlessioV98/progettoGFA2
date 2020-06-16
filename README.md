@@ -70,7 +70,7 @@ Gli altri simboli presenti nella grammatica indicano rispettivamente:
 - **{}** denota un elemento opzionale
 - **|** denota un'alternativa tra elementi
 - **\*** denota un elemento che puo' ripetersi **0** o **N** volte
-- **\+** denota un elemento che puo' rieptersi **1** o **N** volte
+- **\+** denota un elemento che puo' ripetersi **1** o **N** volte
 - **[]** denota un insieme di caratteri che rappresentano un alternativa
 - **()** denota un gruppo di elementi
 
