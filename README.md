@@ -70,7 +70,7 @@ Gli altri simboli presenti nella grammatica indicano rispettivamente:
 - **{}** denota un elemento opzionale
 - **|** denota un'alternativa tra elementi
 - **\*** denota un elemento che puo' ripetersi **0** o **N** volte
-- **\+** denota un elemento che puo' rieptersi **1** o **N** volte
+- **\+** denota un elemento che puo' ripetersi **1** o **N** volte
 - **[]** denota un insieme di caratteri che rappresentano un alternativa
 - **()** denota un gruppo di elementi
 
@@ -108,8 +108,8 @@ Questa funzione consiste principalmente in:
 
 1. Controllo per assicurarsi che il percorso passato in input sia associato ad un file non vuoto
 2. Apertura del file in modalita' *lettura* (**r**) ed inizializzazione di 3 importanti variabili
-    1. **lineToCheck**: variabile in cui viene salvata la prima riga del file
-    2. **linePointer**: variabil in cui viene salvato il numero della riga che si sta analizzando (banalmente e' un contatore che parte da 1 e si incrementa ogni volta)
+    1. **lineToCheck**: variabile in cui viene salvata la stringa associata alla riga corrente del file
+    2. **linePointer**: variabile in cui viene salvato il numero della riga che si sta analizzando (banalmente e' un contatore che parte da 1 e si incrementa ogni volta)
     3. **regex**: variabile core della funzione; la regex al suo interno viene compilata in un *oggetto pattern* utile per controllare la conformita' del file al formato GFA 2.0
 
     ```python
