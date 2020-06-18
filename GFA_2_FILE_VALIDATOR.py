@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 from pathlib2 import Path       # per controllare l'esistenza di un dato file 
                                 # e per raccogliere informazioni a riguardo
@@ -18,7 +18,7 @@ def main():
     try:
         # rapida descrizione del programma
         print('Questo programma si occupa di controllare se un determinato '
-                + 'file rispetti o meno la grammatica e semantica di un determinato ' 
+                + 'file rispetti o meno la grammatica di un determinato ' 
                 + 'linguaggio (o formato).' + '\n'
                 + 'Il formato in questione è il Graphical Fragment Assembly (GFA) 2.0.')
         # rapida descrizione del formato GFA 2.0
