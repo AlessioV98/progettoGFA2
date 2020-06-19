@@ -9,7 +9,6 @@ import json                     # per la formattazione json dell'output
 import webbrowser               # per il reindirizzamento web 
                                 # totalmente just for fun
 
-
 # funzione main 'contenitore' il cui unico scopo e'
 # stampare delle info generali durante l'avvio e 
 # chiamare successivamente le funzioni adibite al corretto
@@ -17,7 +16,7 @@ import webbrowser               # per il reindirizzamento web
 def main():
     try:
         # rapida descrizione del programma
-        print('Questo programma si occupa di controllare se un determinato '
+        print('\nQuesto programma si occupa di controllare se un determinato '
                 + 'file rispetti o meno la grammatica di un determinato ' 
                 + 'linguaggio (o formato).' + '\n'
                 + 'Il formato in questione è il Graphical Fragment Assembly (GFA) 2.0.')
@@ -81,6 +80,7 @@ def FileInput():
         # stampa errori
         print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: ')
         print(json.dumps(errorsArray, indent=4))
+        #print(errorsArray)
     else:
         print('IL FILE NON RISPETTA IL FORMATO GFA 2.0: ' + '\n'
             + 'Essendo un file molto grande, non è possibile visualizzare tutti gli errori '
@@ -125,7 +125,7 @@ def readGFAFileLines(GFAFilePath, errorsArray):
                 '|^#[\s\w]*')                                                                                                                  # regex per il controllo dei COMMENTI           
             # ciclo per il controllo delle regex su ogni riga del file
             while lineToCheck:
-                match = False               
+                #match = False               
                 match = regex.search(lineToCheck)
                 # controllo eventuali righe non conformi 
                 if not match:
